@@ -1,11 +1,13 @@
 package week1;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 public class Application {
@@ -21,7 +23,29 @@ public class Application {
     }
 
     private static int problemTwo() throws IOException {
-        return 0;
+        int freq = 0;
+        List<Integer> inputs  = getLines().mapToInt(Integer::valueOf).boxed().collect(Collectors.toList());
+        ArrayList<Integer> freqsSoFar = new ArrayList();
+
+        freqsSoFar.add(0);
+
+        boolean found = false;
+        int idx = 0;
+        while(!found) {
+            int newFreq = inputs.get(idx) + freqsSoFar.get(freqsSoFar.size() -1);
+
+            if (freqsSoFar.contains(newFreq)) {
+                found = true;
+                freq = newFreq;
+            }
+            freqsSoFar.add(newFreq);
+
+            idx++;
+            if (idx >= inputs.size()) {
+                idx = 0;
+            }
+        }
+        return freq;
 
     }
 
