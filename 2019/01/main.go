@@ -1,8 +1,7 @@
 package main
 
 import (
-	"bufio"
-	"log"
+	"bufio" "log"
 	"math"
 	"os"
 	"strconv"
