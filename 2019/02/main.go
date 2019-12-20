@@ -25,6 +25,18 @@ func main() {
 	res := Parse(code)
 	log.Printf("Part one: %v\n", res[0])
 
+	for noun := 0; noun < 100; noun++ {
+		for verb := 0; verb < 100; verb++ {
+			code[1] = noun
+			code[2] = verb
+			res = Parse(code)
+			if res[0] == 19690720 {
+				log.Printf("Part two: %v %v\n", noun, verb)
+				break
+			}
+		}
+	}
+
 }
 
 // Compute takes in the input and gives us the processed output
