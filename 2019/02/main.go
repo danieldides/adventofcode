@@ -39,11 +39,7 @@ func main() {
 
 }
 
-// Compute takes in the input and gives us the processed output
-func Compute(input string) string {
-	return "out"
-}
-
+// Parse processes the incoming slice of ints and computes the resulting memory state
 func Parse(input []int) []int {
 	memory := make([]int, len(input))
 	copy(memory, input)
