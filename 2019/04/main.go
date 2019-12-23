@@ -6,6 +6,7 @@ import (
 )
 
 func main() {
+	// From input
 	start := 172930
 	end := 683082
 
@@ -15,7 +16,7 @@ func main() {
 
 // Compute takes in the input and gives us the processed output
 func Compute(start, end int) int {
-	var nums []int
+	var nums int
 
 	for idx := start; idx < end; idx++ {
 		if !DuplicateNums(idx) {
@@ -24,15 +25,25 @@ func Compute(start, end int) int {
 		if !IncreasingNums(idx) {
 			continue
 		}
-		nums = append(nums, idx)
+		nums++
 	}
-	return len(nums)
+	return nums
 }
 
 // DuplicateNums determines if two adjacent numbers are the same
 func DuplicateNums(n int) bool {
 	s := strconv.Itoa(n)
-	return s[0] == s[1] || s[1] == s[2] || s[2] == s[3] || s[3] == s[4] || s[4] == s[5]
+
+	pair := false
+	for i := 0; i < 5; i++ {
+
+		if s[i] == s[i+1] {
+			if (i-1 < 0 || s[i-1] != s[i]) && (i+2 >= len(s) || s[i+2] != s[i]) {
+				pair = true
+			}
+		}
+	}
+	return pair
 }
 
 // IncreasingNums verifies that numbers only increase or stay the same

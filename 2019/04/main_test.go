@@ -9,10 +9,12 @@ func TestDuplicateNums(t *testing.T) {
 		in  int
 		out bool
 	}{
+		{123444, false},
 		{111111, true},
 		{110123, true},
 		{123456, false},
 		{124456, true},
+		{111122, true},
 	}
 
 	for _, test := range tests {
@@ -21,6 +23,7 @@ func TestDuplicateNums(t *testing.T) {
 			t.Errorf("Fail duplicate numbers! Input: %v Expected: %v Got: %v",
 				test.in, test.out, out)
 		}
+		break
 	}
 }
 
