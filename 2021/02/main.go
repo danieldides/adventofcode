@@ -21,6 +21,7 @@ type Command struct {
 type Ship struct {
 	position int
 	depth    int
+	aim      int
 }
 
 func main() {
@@ -36,7 +37,7 @@ func main() {
 	for _, line := range lines {
 		parts := strings.Split(line, " ")
 		if len(parts) != 2 {
-			fmt.Println(parts)
+			fmt.Println("Bad input: ", parts)
 			continue
 		}
 		c := Command{
@@ -47,14 +48,15 @@ func main() {
 	}
 
 	log.Printf("Part 1: %v\n", DoOne(in))
-	// log.Printf("Part 2: %v\n", DoTwo(in))
+	log.Printf("Part 2: %v\n", DoTwo(in))
 
 }
 
-func findPosition(in []Command) int {
+func DoOne(in []Command) int {
 	ship := Ship{
 		position: 0,
 		depth:    0,
+		aim:      0,
 	}
 
 	for _, command := range in {
@@ -69,17 +71,28 @@ func findPosition(in []Command) int {
 		}
 	}
 
-	fmt.Println(ship)
-
 	return ship.position * ship.depth
 }
 
-// Part 1
-func DoOne(in []Command) int {
-	return findPosition(in)
-}
-
-// Part 2
 func DoTwo(in []Command) int {
-	return findPosition(in)
+	ship := Ship{
+		position: 0,
+		depth:    0,
+		aim:      0,
+	}
+
+	for _, command := range in {
+
+		switch command.direction {
+		case "forward":
+			ship.position += command.value
+			ship.depth += ship.aim * command.value
+		case "down":
+			ship.aim += command.value
+		case "up":
+			ship.aim -= command.value
+		}
+	}
+
+	return ship.position * ship.depth
 }
