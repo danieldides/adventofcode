@@ -37,3 +37,25 @@ func TestDoOne(t *testing.T) {
 		})
 	}
 }
+
+func TestDoTwo(t *testing.T) {
+	tt := []struct {
+		In     string
+		Result int
+	}{
+		{
+			In:     in,
+			Result: 12,
+		},
+	}
+
+	for i, test := range tt {
+		testName := fmt.Sprintf("%v", i)
+		t.Run(testName, func(t *testing.T) {
+			result := DoTwo(test.In)
+			if result != test.Result {
+				t.Errorf("Invalid result. Expected: %v Got: %v", test.Result, result)
+			}
+		})
+	}
+}

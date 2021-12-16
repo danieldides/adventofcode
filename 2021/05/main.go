@@ -16,7 +16,7 @@ func main() {
 	}
 
 	log.Printf("Part 1: %v\n", DoOne(string(file)))
-	log.Printf("Part 2: %v\n", DoTwo())
+	log.Printf("Part 2: %v\n", DoTwo(string(file)))
 
 }
 
@@ -103,9 +103,7 @@ func calculateScore(g [][]int) int {
 	return score
 }
 
-func DoOne(s string) int {
-	lines := parseInput(s)
-
+func makeGrid(lines []Line) [][]int {
 	var xPoints, yPoints []int
 
 	for i := range lines {
@@ -123,13 +121,17 @@ func DoOne(s string) int {
 	fmt.Printf("Making a %v x %v grid.\n", maxX, maxY)
 	// Construct our grid
 	grid := make([][]int, maxY+1)
+
 	for i := range grid {
 		grid[i] = make([]int, maxX+1)
 	}
 
+	return grid
+}
+
+func drawLines(lines []Line, grid [][]int, diag bool) {
 	// Start incrementing values
 	for _, l := range lines {
-		// fmt.Printf("Drawing line from %v to %v\n", l.Start, l.End)
 
 		// Drawing a vertical line
 		if l.Start.X == l.End.X {
@@ -148,7 +150,57 @@ func DoOne(s string) int {
 				grid[l.Start.Y][i] += 1
 			}
 		}
+
+		// Draw diagonally
+		if diag && l.Start.Y != l.End.Y && l.Start.X != l.End.X {
+			fmt.Printf("Drawing line from %v to %v\n", l.Start, l.End)
+			points := solveLine(l)
+			for _, p := range points {
+				grid[p.Y][p.X] += 1
+			}
+		}
 	}
+}
+
+func solveLine(l Line) []Pair {
+	var points []Pair
+
+	slope := (l.End.Y - l.Start.Y) / (l.End.X - l.Start.X)
+
+	b := -1 * ((slope * l.Start.X) - l.Start.Y)
+
+	min, max := sortInt(l.Start.X, l.End.X)
+
+	// fmt.Println("Diag from ", min, "to ", max)
+
+	// Iterate through x range, calculate y values
+	for x := min; x < max+1; x++ {
+		y := slope*x + b
+		pair := Pair{X: x, Y: y}
+
+		points = append(points, pair)
+	}
+
+	return points
+
+}
+
+func DoOne(s string) int {
+	lines := parseInput(s)
+
+	grid := makeGrid(lines)
+
+	drawLines(lines, grid, false)
+
+	return calculateScore(grid)
+}
+
+func DoTwo(s string) int {
+	lines := parseInput(s)
+
+	grid := makeGrid(lines)
+
+	drawLines(lines, grid, true)
 
 	// Print the row. Useful for testing only
 	// for _, row := range grid {
@@ -156,8 +208,4 @@ func DoOne(s string) int {
 	// }
 
 	return calculateScore(grid)
-}
-
-func DoTwo() int {
-	return 0
 }
