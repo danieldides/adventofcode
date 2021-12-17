@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"io/ioutil"
 	"log"
 	"sort"
@@ -53,15 +52,41 @@ func DoOne(cc []int) int {
 	fuel := 0
 	for c := range cc {
 		cost := abs(cc[c], m)
-		fmt.Println(c, cost)
 		fuel += cost
 	}
-
-	fmt.Println(fuel)
 
 	return fuel
 }
 
-func DoTwo(c []int) int {
-	return 0
+func gaussSum(n int) int {
+	return (n * (n + 1)) / 2
+}
+
+func findDistance(x, y int) int {
+	return gaussSum(abs(x, y))
+}
+
+func DoTwo(cc []int) int {
+	sort.Ints(cc)
+
+	var distances []int
+
+	// Go through all the possible values between the biggest
+	// and the smallest, and test the distances
+	for i := cc[0]; i <= cc[len(cc)-1]; i++ {
+		var distance int
+		for _, c := range cc {
+			distance += findDistance(c, i)
+		}
+		distances = append(distances, distance)
+	}
+
+	min := 0
+	for i, d := range distances {
+		if i == 0 || d < min {
+			min = d
+		}
+	}
+
+	return min
 }
