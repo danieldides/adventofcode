@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"io/ioutil"
 	"log"
 	"strconv"
@@ -31,7 +30,7 @@ func main() {
 
 }
 
-func DoOne(fish []int) int {
+func DoOld(fish []int) int {
 	for day := 0; day < 80; day++ {
 		for i := 0; i < len(fish); i++ {
 			if fish[i] == 0 {
@@ -45,29 +44,57 @@ func DoOne(fish []int) int {
 	return len(fish)
 }
 
-func sum(m map[int]int) int {
-	var result int
+func shift(a [9]int) (int, [9]int) {
+	var b [9]int
 
-	for _, v := range m {
-		result += v
+	zeroes := a[0]
+
+	for i := 1; i < len(a); i++ {
+		b[i-1] = a[i]
 	}
 
-	return result
+	return zeroes, b
 }
 
-func DoTwo(fish []int) int {
-	// Map of age: number of fish at that age:w
-	ages := [9]int{}
+func DoNew(fish []int, days int) int {
+
+	var zeroes int
+	var a [9]int
+
+	a = [9]int{}
 
 	// Initial population
 	for _, f := range fish {
-		ages[f] += 1
+		a[f] += 1
 	}
 
-	for day := 0; day < 18; day++ {
-		fmt.Println("Day: ", day, sum(ages))
+	for day := 0; day < days; day++ {
+		zeroes, a = shift(a)
+
+		a[6] += zeroes
+		a[8] += zeroes
+
+		total := 0
+		for s := range a {
+			total += a[s]
+		}
+
+		// fmt.Println(day, total)
+
 	}
 
-	fmt.Println(ages)
-	return len(fish)
+	total := 0
+	for s := range a {
+		total += a[s]
+	}
+
+	return total
+}
+
+func DoOne(fish []int) int {
+	return DoNew(fish, 80)
+}
+
+func DoTwo(fish []int) int {
+	return DoNew(fish, 256)
 }
