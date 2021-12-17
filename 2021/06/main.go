@@ -73,14 +73,6 @@ func DoNew(fish []int, days int) int {
 
 		a[6] += zeroes
 		a[8] += zeroes
-
-		total := 0
-		for s := range a {
-			total += a[s]
-		}
-
-		// fmt.Println(day, total)
-
 	}
 
 	total := 0
