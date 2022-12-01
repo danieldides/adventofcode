@@ -62,17 +62,6 @@ func parseElves(lines []string) []int {
 	var elf, weight int
 	var elves []int
 
-	// for _, line := range lines {
-	// 	weight += atoi(line)
-
-	// 	if line == "" {
-	// 		elf++
-	// 		elves = append(elves, weight)
-	// 		weight = 0
-	// 		continue
-	// 	}
-	// }
-
 	for _, line := range lines {
 		w, err := strconv.Atoi(line)
 		weight += w
